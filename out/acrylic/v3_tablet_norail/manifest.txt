@@ -1,19 +1,20 @@
 v3_tablet_norail
-No rails — a plain Pi tablet.
+No Joy-Con slots — a plain Pi tablet.
 
-outer 161.0 x 109.0 mm; acrylic stack 41 mm
+outer 163.0 x 109.0 mm; acrylic stack 41.0 mm
 display cavity 145.0 x 93.0; window 111.4 x 63.1
 
-part                   thickness  qty
-front                  3T        1
-L1_plain               5T        1
-L2_display             5T        1
-L3_display             5T        1
-L4_pi                  5T        1
-L5_pi                  5T        1
-L6_pi                  5T        1
-L7_pi                  5T        1
-back                   3T        1
+part               thickness
+front              3T
+L1_plain           5T
+L2_display         5T
+L3_display         5T
+L4_pi              5T
+L5_pi              5T
+L6_pi              5T
+L7_pi              5T
+back               3T
 
 hardware: 4x M2.5 x 45 black button-head + M2.5 nuts
-finish: CAST acrylic; front black or smoked. kerf ~0.15 mm; 2.8 mm holes = M2.5 clearance
+finish: CAST acrylic; front black/smoked. Bond layers with acrylic cement or rely on the bolts.
+fit: mouth is deliberately 0.1 tight — sand the 5T/2T sheet faces if the Joy-Con binds.

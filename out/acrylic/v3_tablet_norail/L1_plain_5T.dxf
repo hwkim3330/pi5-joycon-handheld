@@ -493,7 +493,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2461292.424965278
+2461292.4399189814
   9
 $TDUCREATE
  40
@@ -501,7 +501,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2461292.424965278
+2461292.4399189814
   9
 $TDUUPDATE
  40
@@ -933,11 +933,11 @@ $PSTYLEMODE
   9
 $FINGERPRINTGUID
   2
-{6021CBF3-F04C-4BA6-9298-E5225BA08255}
+{C269E5D6-95D0-4617-AF96-D8E2052CC25A}
   9
 $VERSIONGUID
   2
-{7C8DDBF9-CF6E-414D-B449-0CD181A8EFF6}
+{38744972-3CFC-44AE-B030-C232D165D11C}
   9
 $EXTNAMES
 290
@@ -1327,9 +1327,9 @@ ISM
   0
 CLASS
   1
-ACDBPLACEHOLDER
+LAYOUT
   2
-AcDbPlaceHolder
+AcDbLayout
   3
 ObjectDBX Classes
  90
@@ -1343,9 +1343,9 @@ ObjectDBX Classes
   0
 CLASS
   1
-LAYOUT
+ACDBPLACEHOLDER
   2
-AcDbLayout
+AcDbPlaceHolder
   3
 ObjectDBX Classes
  90
@@ -2059,13 +2059,13 @@ AcDbEntity
 100
 AcDbLine
  10
-74.5
+75.5
  20
 -54.5
  30
 0.0
  11
--74.5
+-75.5
  21
 -54.5
  31
@@ -2083,7 +2083,7 @@ AcDbEntity
 100
 AcDbCircle
  10
--74.5
+-75.5
  20
 -48.5
  30
@@ -2109,13 +2109,13 @@ AcDbEntity
 100
 AcDbLine
  10
--80.5
+-81.5
  20
 -48.5
  30
 0.0
  11
--80.5
+-81.5
  21
 48.5
  31
@@ -2133,7 +2133,7 @@ AcDbEntity
 100
 AcDbCircle
  10
--74.5
+-75.5
  20
 48.5
  30
@@ -2159,13 +2159,13 @@ AcDbEntity
 100
 AcDbLine
  10
--74.5
+-75.5
  20
 54.5
  30
 0.0
  11
-74.5
+75.5
  21
 54.5
  31
@@ -2183,7 +2183,7 @@ AcDbEntity
 100
 AcDbCircle
  10
-74.5
+75.5
  20
 48.5
  30
@@ -2209,13 +2209,13 @@ AcDbEntity
 100
 AcDbLine
  10
-80.5
+81.5
  20
 48.5
  30
 0.0
  11
-80.5
+81.5
  21
 -48.5
  31
@@ -2233,7 +2233,7 @@ AcDbEntity
 100
 AcDbCircle
  10
-74.5
+75.5
  20
 -48.5
  30
@@ -2259,7 +2259,7 @@ AcDbEntity
 100
 AcDbCircle
  10
--76.5
+-76.0
  20
 -50.5
  30
@@ -2279,7 +2279,7 @@ AcDbEntity
 100
 AcDbCircle
  10
-76.5
+76.0
  20
 -50.5
  30
@@ -2299,7 +2299,7 @@ AcDbEntity
 100
 AcDbCircle
  10
--76.5
+-76.0
  20
 50.5
  30
@@ -2519,7 +2519,7 @@ AcDbEntity
 100
 AcDbCircle
  10
-76.5
+76.0
  20
 50.5
  30
@@ -3529,7 +3529,7 @@ DictionaryVariables
 280
 0
   1
-1.4.4 @ 2026-09-08T01:11:57.211261+00:00
+1.4.4 @ 2026-09-08T01:33:29.199076+00:00
   0
 DICTIONARYVAR
   5
@@ -3541,7 +3541,7 @@ DictionaryVariables
 280
 0
   1
-1.4.4 @ 2026-09-08T01:11:57.214286+00:00
+1.4.4 @ 2026-09-08T01:33:29.202061+00:00
   0
 ENDSEC
   0

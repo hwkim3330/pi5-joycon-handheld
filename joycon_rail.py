@@ -1,4 +1,10 @@
-"""Joy-Con (Switch 1) MALE dovetail rail — screw-on printed module.
+"""SUPERSEDED — kept for reference only.
+
+This modelled a MALE dovetail on the case. That is backwards: on a real Switch the
+CONSOLE has the female T-slot and the JOY-CON carries the male metal rail + pin.
+The correct geometry (female slot, Cuttlephone-measured) is in acrylic_panels.py.
+
+Original notes: Joy-Con (Switch 1) MALE dovetail rail — screw-on printed module.
 
     python3 joycon_rail.py     # -> out/joycon_rail_R.stl, out/joycon_rail_L.stl
 
