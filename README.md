@@ -5,7 +5,14 @@ The **Raspberry Pi 5** bolts to the display's own posts and hangs out the open
 back with its cooler / NVMe exposed. Real Switch Joy-Cons slide down into
 **T-slots cut straight into the acrylic layers** — no printing, no glued rails.
 
-![front](out/acrylic/v6_open_slot/preview_front.png)
+**7 acrylic pieces, 4 thicknesses, 18 mm thick.** Front plate + 6 layers, ordered as one DXF sheet per thickness.
+
+![exploded](out/acrylic/v6_open_slot/preview_exploded.png)
+
+| front (screen off) | open back — Pi 5 + cooler exposed |
+|---|---|
+| ![front](out/acrylic/v6_open_slot/preview_front.png) | ![back](out/acrylic/v6_open_slot/preview_back.png) |
+
 ![slot](out/acrylic/v6_open_slot/preview_slot.png)
 
 ## The Joy-Con slot — measured, not guessed
