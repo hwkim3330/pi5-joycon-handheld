@@ -1,0 +1,25 @@
+v7_clear_acrylzip
+Standard 2T/3T/5T only. 2T pocket layers -> RAW Joy-Con inner 11.0 (0.9 over reference); bring to ~10.1 with 0.45 mm clear PET liners on each pocket face. Body 11.0.
+
+MATERIAL: clear (transparent) CAST acrylic, all parts. Hardware: silver/stainless.
+
+body 164.4 x 108.5 mm; acrylic stack front+body = 13.0 mm (body 11.0, module 10.40 -> rear +0.60 inside)
+glass pocket 144.40 x 92.46 (L1); ledge cavity 126.24 x 74.46 offset -3.47; window 112.0 x 63.5 at x=-2.47 (viewing 111.5 x 63.0 + 0.25/side)
+glass gasket: ring 4.0 mm wide on the ledge, 1.5 mm uncompressed foam/silicone
+Joy-Con slot: mouth 7.0 (target 7.1), raw inner 11.0 (target 10.1), with 0.45 mm liners -> 10.10
+lip 1.0, cavity 2.4, slot 3.4 from face, open top, notch 3.8 @ 9.4 from top
+
+part                    thickness  qty
+front                   2T        1
+L1_gpocket              2T        1
+L2_mouth                5T        1
+L3_mouth                2T        1
+L4_pocket               2T        1
+
+thicknesses to order: 2T, 5T
+
+CASE BOLTS (separate from the 4 display->Pi screws shipped with the display):
+  4x M2.5 silver button-head, length >= 17.0 mm (stack 13.0 + washer 0.5 + nut 2.0 + 1.5 stick-out) -> use M2.5 x 18 mm
+  4x M2.5 washer, 4x M2.5 nut (nyloc: add 1 mm to the length)
+
+KERF: DXF is nominal finished geometry; the shop applies cutter compensation. Do not add kerf yourself.

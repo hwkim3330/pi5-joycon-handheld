@@ -1,0 +1,21 @@
+test_coupon_exact
+FIT COUPON for v7_clear_exact: 40 mm slot section, identical layer order and slot geometry. Cut this first, clamp the six pieces with two M2.5 bolts, slide a Joy-Con in from the open top.
+
+MATERIAL: clear (transparent) CAST acrylic, all parts. Hardware: silver/stainless.
+
+Joy-Con slot: mouth 7.0 (target 7.1), raw inner 10.0 (target 10.1)
+lip 1.0, cavity 2.4, slot 3.4 from face, open top, notch 3.8 @ 9.4 from top
+
+part                    thickness  qty
+C1_gpocket              1.5T        1
+C2_mouth                5T        1
+C3_mouth                2T        1
+C4_pocket               1.5T        1
+C5_plain                1.5T        1
+
+thicknesses to order: 1.5T, 2T, 5T
+
+clamp with 2x M2.5 x 25 + nuts; slide a Joy-Con a few cm from the open top.
+tight -> sand the 5T/2T sheet faces lightly; loose -> add/adjust liners.
+
+KERF: DXF is nominal finished geometry; the shop applies cutter compensation. Do not add kerf yourself.
