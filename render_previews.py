@@ -1,9 +1,12 @@
 """Preview renders (VTK offscreen) + a 2-D slot section.   python3 render_previews.py
 
-Display, frame, rear posts and connector blocks follow the official 5" STEP
-(reference/td2_5in.step). The Raspberry Pi 5 is drawn as a block on a generic
-bracket over the four rear M2.5 points — the STEP has no Pi hole pattern, so how
-the Pi actually mounts is not modelled; treat that part as illustration.
+Display, frame and connector blocks follow the official 5" STEP
+(reference/td2_5in.step). The Raspberry Pi 5 is drawn mounted DIRECTLY on four
+corner stand-offs on the display rear, per Raspberry Pi's documentation ("you can
+mount any SBC form-factor Raspberry Pi directly to the back of the Touch Display 2",
+four supplied M2.5 screws). The STEP does not model those stand-offs, so their exact
+coordinates and height are nominal here — the Pi's 58 x 49 pattern is drawn centred
+on the display's rear frame. Treat the stand-off placement as illustration.
 """
 import os, math, tempfile
 import cadquery as cq, vtk
@@ -56,26 +59,29 @@ def build_scene(v, gap=0.0):
     frame = (cq.Workplane("XY").center(ap.FRAME_DX, ap.FRAME_DY).rect(ap.FRAME_W, ap.FRAME_H).extrude(ap.FRAME_BEHIND_GLASS)
              .edges("|Z").fillet(2.0).translate((0, 0, zg + ap.GLASS_T)))
     oth.append(actor(stl(frame, "frame"), (0.12, 0.12, 0.14), 1.0, 0.4, 30))
-    zpost = zg + ap.DISP_D                                        # rear plane of the module
-    for (px, py) in ap.POST_XY:                                    # the four rear M2.5 points
-        oth.append(actor(stl(cq.Workplane("XY").center(px, py).circle(2.5).circle(1.25).extrude(0.8).translate((0, 0, zpost - 0.8)), f"post{px:.0f}{py:.0f}"), (0.8, 0.8, 0.83), 1.0, 0.8, 80))
+    zpost = zg + ap.STEP_BODY_D                                   # rear plane of the glass/frame body
     # connector blocks from the STEP (landscape X = portrait Y - glass offset)
-    ffc = cq.Workplane("XY").center(37.37 - 2.47 - 3.47 + 3.47, 0.03).rect(8.9, 21.0).extrude(2.7).translate((0, 0, zpost - 2.7 - 1.68))
+    ffc = cq.Workplane("XY").center(37.37 - 2.47, 0.03).rect(8.9, 21.0).extrude(2.7).translate((0, 0, zpost - 2.7 - 1.68))
     oth.append(actor(stl(ffc, "ffc"), (0.95, 0.75, 0.35), 1.0, 0.2, 10))
     j1 = cq.Workplane("XY").center(-30.19 - 2.47, 4.13).rect(5.2, 16.4).extrude(2.0).translate((0, 0, zpost - 2.0 - 3.0))
     oth.append(actor(stl(j1, "j1"), (0.85, 0.2, 0.2), 1.0, 0.3, 20))
-    # generic bracket + Pi 5 block over the posts (illustration only)
-    zb = zpost + 0.5 + (gap*3 if gap else 0)
-    bracket = cq.Workplane("XY").rect(112, 60).extrude(1.5).edges("|Z").fillet(4).translate((0, 0, zb))
-    oth.append(actor(stl(bracket, "bracket"), (0.75, 0.76, 0.8), 0.9, 0.5, 40))
-    pi = cq.Workplane("XY").rect(ap.PI_W, ap.PI_H).extrude(1.6).edges("|Z").fillet(3).translate((0, 0, zb + 1.5 + 6))
+    # Pi 5 mounted DIRECTLY on the display's four corner stand-offs (official method).
+    # Stand-off coordinates are not published; drawn centred on the rear frame.
+    zso = zpost + (gap*2 if gap else 0)
+    zpi = zso + ap.STANDOFF_H
+    for dx in (-ap.PI_HOLE_DX/2, ap.PI_HOLE_DX/2):
+        for dy in (-ap.PI_HOLE_DY/2, ap.PI_HOLE_DY/2):
+            px, py = ap.PI_OFF_X + dx, ap.PI_OFF_Y + dy
+            so = cq.Workplane("XY").center(px, py).circle(2.6).circle(1.3).extrude(ap.STANDOFF_H).translate((0, 0, zso))
+            oth.append(actor(stl(so, f"so{dx:.0f}{dy:.0f}"), (0.30, 0.31, 0.34), 1.0, 0.5, 40))
+            sc = cq.Workplane("XY").center(px, py).circle(2.3).extrude(1.3).translate((0, 0, zpi + 1.6))
+            oth.append(actor(stl(sc, f"sc{dx:.0f}{dy:.0f}"), (0.82, 0.83, 0.86), 1.0, 0.9, 90))
+    pi = (cq.Workplane("XY").center(ap.PI_OFF_X, ap.PI_OFF_Y).rect(ap.PI_W, ap.PI_H).extrude(1.6)
+          .edges("|Z").fillet(3).translate((0, 0, zpi)))
     oth.append(actor(stl(pi, "pi"), (0.16, 0.42, 0.28), 1.0, 0.3, 20))
-    for dx in (-29, 29):
-        for dy in (-24.5, 24.5):
-            oth.append(actor(stl(cq.Workplane("XY").center(dx, dy).circle(2.4).extrude(6).translate((0, 0, zb + 1.5)), f"so{dx}{dy}"), (0.78, 0.78, 0.8), 1.0, 0.7, 60))
-    cooler = cq.Workplane("XY").center(-8, 3).rect(52, 40).extrude(15).translate((0, 0, zb + 1.5 + 6 + 1.6))
+    cooler = cq.Workplane("XY").center(ap.PI_OFF_X - 8, ap.PI_OFF_Y + 3).rect(52, 40).extrude(15).translate((0, 0, zpi + 1.6))
     oth.append(actor(stl(cooler, "cooler"), (0.35, 0.36, 0.40), 1.0, 0.5, 40))
-    ports = cq.Workplane("XY").center(ap.PI_W/2 - 9, 0).rect(18, 50).extrude(16).translate((0, 0, zb + 1.5 + 6 + 1.6))
+    ports = cq.Workplane("XY").center(ap.PI_OFF_X + ap.PI_W/2 - 9, ap.PI_OFF_Y).rect(18, 50).extrude(16).translate((0, 0, zpi + 1.6))
     oth.append(actor(stl(ports, "ports"), (0.70, 0.72, 0.75), 1.0, 0.6, 50))
     # bolts: button head front, shank, washer + nut on the rear face
     m = ap.validate(v); L = m["bolt_rec"]

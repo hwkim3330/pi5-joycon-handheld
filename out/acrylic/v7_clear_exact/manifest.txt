@@ -1,9 +1,9 @@
 v7_clear_exact
-Closest to the reference: 1.5T pocket layers -> Joy-Con inner 10.0. Needs 1.5T clear cast (not a standard Acrylzip option). Body 11.5 = module 10.4 fully inside.
+Closest to the reference: 1.5T pocket layers -> Joy-Con inner 10.0. Needs 1.5T clear cast (not a standard Acrylzip option). Body 11.5 takes the 10.40 STEP glass/frame body.
 
 MATERIAL: clear (transparent) CAST acrylic, all parts. Hardware: silver/stainless.
 
-body 164.4 x 108.5 mm; acrylic stack front+body = 13.5 mm (body 11.5, module 10.40 -> rear +1.10 inside)
+body 164.4 x 108.5 mm; acrylic stack front+body = 13.5 mm (body 11.5; STEP glass/frame body 10.40 -> its rear ends +1.10 inside. Complete product depth is 16 mm per the documentation: stand-offs + Pi project through the open back.)
 glass pocket 144.40 x 92.46 (L1); ledge cavity 126.24 x 74.46 offset -3.47; window 112.0 x 63.5 at x=-2.47 (viewing 111.5 x 63.0 + 0.25/side)
 glass gasket: ring 4.0 mm wide on the ledge, 1.0 mm uncompressed foam/silicone
 Joy-Con slot: mouth 7.0 (target 7.1), raw inner 10.0 (target 10.1)

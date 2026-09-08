@@ -7,9 +7,10 @@
 Fabrication intent (not a render toy):
   * 100 % CLEAR CAST acrylic, silver/stainless M2.5 button-head hardware.
   * Open back: the Pi 5, its Active Cooler / NVMe HAT, cables all visible.
-  * The Pi 5 is screwed to the DISPLAY's four rear stand-offs with the four M2.5
-    screws shipped with the display (official install). Those screws hold the Pi to
-    the LCD. They do NOT hold the LCD in the case.
+  * The Pi 5 is screwed DIRECTLY to the display's four rear corner stand-offs with the
+    four M2.5 screws shipped with the display (official install: "you can mount any SBC
+    form-factor Raspberry Pi directly to the back of the Touch Display 2"). Those screws
+    hold the Pi to the LCD. They do NOT hold the LCD in the case.
   * The LCD is captive like in any bezel: layer 1 is a pocket for the 0.70 mm cover
     glass; the layers behind have a smaller, frame-sized cavity, so the glass border
     rests on a ledge (>= 4.6 mm wide). Front plate in front, ledge behind, open back.
@@ -18,9 +19,12 @@ Fabrication intent (not a render toy):
 
 Display geometry is measured from the official 5" STEP (reference/td2_5in.step):
 glass 91.46 x 143.40 x 0.70 R5, rear frame 72.96 x 124.74 set 3.47 off the glass centre,
-total depth 10.40 (the docs' "16 mm" is not the bare module), active area 2.47 off the
-glass centre. Active 62.1 x 110.4 / viewing 63.0 x 111.5 from the product brief.
-Official drawings are reference-only: measure a real part before a volume order.
+active area 2.47 off the glass centre. The STEP's glass+frame envelope is 10.40 mm and
+that is what the acrylic pocket is sized to; the COMPLETE product depth is 16 mm per the
+documentation, the difference being the rear mounting stand-offs and whatever is bolted
+to them, which pass through this case's open back. Active 62.1 x 110.4 / viewing
+63.0 x 111.5 from the product brief. Official drawings are reference-only: measure a real
+part before a volume order.
 
 Joy-Con slot: Nintendo puts the FEMALE slot on the console, the MALE rail on the
 Joy-Con. Reference geometry is derived from the field-tested Cuttlephone project
@@ -44,9 +48,18 @@ GLASS_R          = 5.0                            # corner radius (8 R5 edges in
 FRAME_W, FRAME_H = 124.74, 72.96                  # rear frame footprint (largest rear body)
 FRAME_DX, FRAME_DY = -3.47, 0.0                   # frame centre vs glass centre
 FRAME_BEHIND_GLASS = 9.70                         # frame rear plane behind the glass back
-DISP_D           = GLASS_T + FRAME_BEHIND_GLASS   # 10.40 total (NOT the 16 mm quoted in docs)
+STEP_BODY_D      = GLASS_T + FRAME_BEHIND_GLASS   # 10.40: the glass+frame envelope IN THE STEP
+OFFICIAL_DEPTH   = 16.0                           # documented depth of the complete product
+DISP_D           = STEP_BODY_D                    # what the acrylic pocket is sized to
 PANEL_DX         = -2.47                          # active-area (panel) centre vs glass centre
-POST_XY          = [(sx*51.85, sy*25.5) for sx in (-1, 1) for sy in (-1, 1)]   # 4x M2.5 rear points, 103.7 x 51.0
+# The STEP models the glass + frame body only. It does NOT model the rear mounting
+# stand-offs: its four rear M2.5-size bosses sit 103.70 x 51.00 apart, which is not any
+# Pi hole pattern, so they belong to the display's own assembly, not to Pi mounting.
+# Per Raspberry Pi's documentation an SBC-form-factor Pi mounts DIRECTLY to the four
+# corner stand-offs on the display rear with the four supplied M2.5 screws. The
+# stand-offs and the Pi therefore project through this case's open back; the acrylic
+# body is sized to STEP_BODY_D, not to the 16 mm complete-product envelope.
+STEP_REAR_BOSSES = [(sx*51.85, sy*25.5) for sx in (-1, 1) for sy in (-1, 1)]   # 103.7 x 51.0, NOT Pi mounting
 # Product brief / documentation
 ACTIVE_W, ACTIVE_H = 110.4, 62.1
 VIEW_W, VIEW_H   = 111.5, 63.0
@@ -57,9 +70,13 @@ R_WIN            = 2.0
 # legacy aliases used by the docs
 DISP_W, DISP_H, DISP_R = GLASS_W, GLASS_H, GLASS_R
 
-# Pi 5 (85 x 56). The 5" STEP has NO 58 x 49 Pi hole pattern: its four rear M2.5 points
-# are 103.7 x 51.0 apart, so a bracket is involved. Modelled as a block for previews only.
+# Pi 5 mounts directly on the display's four corner stand-offs (official method).
+# Preview only - the stand-off coordinates are not published, so the pattern is drawn
+# centred on the display's rear frame.
 PI_W, PI_H = 85.0, 56.0
+PI_HOLE_DX, PI_HOLE_DY = 58.0, 49.0               # Raspberry Pi SBC mounting-hole pattern
+PI_OFF_X, PI_OFF_Y = FRAME_DX, 0.0                # nominal, centred on the rear frame
+STANDOFF_H = 4.0                                  # nominal display stand-off height
 
 # =============================== case body ====================================
 CLR_GLASS  = 0.50                    # radial clearance around the glass (L1 pocket)
@@ -111,7 +128,7 @@ VERSIONS = {
     "v7_clear_exact": dict(
         front_t=2.0, stack=_stack(1.5, [("plain", 1.5)]), shim=0.0,
         note="Closest to the reference: 1.5T pocket layers -> Joy-Con inner 10.0. Needs 1.5T clear cast "
-             "(not a standard Acrylzip option). Body 11.5 = module 10.4 fully inside."),
+             "(not a standard Acrylzip option). Body 11.5 takes the 10.40 STEP glass/frame body."),
     "v7_clear_acrylzip": dict(
         front_t=2.0, stack=_stack(2.0, []), shim=0.45,
         note="Standard 2T/3T/5T only. 2T pocket layers -> RAW Joy-Con inner 11.0 (0.9 over reference); "
@@ -222,8 +239,8 @@ def validate(v):
     ledge_y  = (GLASS_H/2) - (FCAV_H/2)
     _check(min(ledge_xp, ledge_xm, ledge_y) >= 4.0, f"glass ledge too narrow: {ledge_xp:.2f}/{ledge_xm:.2f}/{ledge_y:.2f}")
     _check(g_t > GLASS_T + 0.3, "glass pocket layer too thin for the glass + gasket")
-    _check(body >= DISP_D, f"body {body} shallower than the module {DISP_D:.2f} (frame would protrude)")
-    _check(body - DISP_D <= 2.0, f"body {body} recesses the module too deep")
+    _check(body >= STEP_BODY_D, f"body {body} shallower than the STEP glass/frame body {STEP_BODY_D:.2f} (frame would protrude)")
+    _check(body - STEP_BODY_D <= 2.0, f"body {body} recesses the glass/frame body too deep")
     # bolts
     _check(BX - r - GCAV_W/2 >= 1.5, "bolt hole too close to the glass pocket (side)")
     _check(BY - r - GCAV_H/2 >= 1.2, "bolt hole too close to the glass pocket (top)")
@@ -294,7 +311,9 @@ def write_manifest(name, v, parts, thick, m, outdir, coupon=False):
         f.write("MATERIAL: clear (transparent) CAST acrylic, all parts. Hardware: silver/stainless.\n\n")
         if not coupon:
             f.write(f"body {W:.1f} x {H:.1f} mm; acrylic stack front+body = {m['total']:.1f} mm "
-                    f"(body {m['body']:.1f}, module {DISP_D:.2f} -> rear {m['body']-DISP_D:+.2f} inside)\n")
+                    f"(body {m['body']:.1f}; STEP glass/frame body {STEP_BODY_D:.2f} -> its rear ends "
+                    f"{m['body']-STEP_BODY_D:+.2f} inside. Complete product depth is {OFFICIAL_DEPTH:g} mm per the "
+                    f"documentation: stand-offs + Pi project through the open back.)\n")
             f.write(f"glass pocket {GCAV_W:.2f} x {GCAV_H:.2f} (L1); ledge cavity {FCAV_W:.2f} x {FCAV_H:.2f} "
                     f"offset {FRAME_DX:+.2f}; window {WIN_W:.1f} x {WIN_H:.1f} at x={ACT_DX:+.2f} "
                     f"(viewing {VIEW_W} x {VIEW_H} + {WINDOW_MARGIN}/side)\n")

@@ -21,7 +21,7 @@ Portrait STEP coordinates, origin as authored; **+Z is the front**.
 | frame centre vs glass centre | **−3.47** along the long axis |
 | panel centre vs glass centre | **−2.47** along the long axis |
 | total depth (glass front → rearmost) | **10.40** (4.92 → −5.48) |
-| rear M2.5 points | 4 × (±25.50, −49.38 / +54.32) → pitch **51.00 × 103.70**; boss r1.75, hole r1.25, z[−5.48, −1.98] |
+| four rear M2.5-size bosses | 4 × (±25.50, −49.38 / +54.32) → pitch **51.00 × 103.70**; boss r1.75, hole r1.25, z[−5.48, −1.98]. Display assembly, *not* Pi mounting |
 | FFC connector block | 21.00 × 8.90 × 2.70 at (0.03, +37.37) |
 | J1 power connector block | 16.40 × 5.20 × 2.00 at (+4.13, −30.19) |
 | outside the frame footprint | none |
@@ -29,11 +29,14 @@ Portrait STEP coordinates, origin as authored; **+Z is the front**.
 
 Two consequences the documentation does not spell out:
 
-1. **The module is 10.40 mm deep**, not the 16 mm quoted for the retail product —
-   16 mm presumably includes packaging/stand-off allowance. The case body is sized
-   to 10.40.
-2. **The four rear M2.5 points are 103.70 × 51.00 apart, which is not the
-   Raspberry Pi 5 hole pattern (58 × 49)**, so mounting a Pi 5 to the 5" display
-   involves a bracket/adapter. This case does not rely on that interface.
+1. **The STEP models the glass + frame body only: a 10.40 mm envelope.** The
+   documented depth of the complete product is **16 mm** — the difference is the rear
+   mounting stand-offs and whatever is bolted to them. The acrylic pocket is sized to
+   10.40; the stand-offs and the Pi pass through the open back.
+2. **The stand-offs are not in the STEP.** Its four rear M2.5-size bosses are
+   103.70 × 51.00 apart, which is no Pi hole pattern, so they are display assembly
+   features. Per Raspberry Pi's documentation an SBC-form-factor Pi mounts directly to
+   the display's four corner stand-offs with the four supplied M2.5 screws. Do not
+   derive case geometry from the 103.70 × 51.00 bosses (this repo does not).
 
 Official drawings are reference-only. Measure a real display before a volume order.

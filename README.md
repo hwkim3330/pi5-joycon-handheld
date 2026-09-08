@@ -42,9 +42,11 @@ along case X, origin at the glass centre.
 |---|---|---|
 | cover glass | 143.40 × 91.46 × **0.70**, corners **R5.0** | `GLASS_*` |
 | rear frame (largest rear body) | 124.74 × 72.96, centre **x −3.47** from the glass centre, **9.70** behind the glass back | `FRAME_*` |
-| total module depth | **10.40** — the "16 mm" in the docs is not the bare module | `DISP_D` |
+| glass + frame envelope in the STEP | **10.40** — what the acrylic pocket is sized to | `STEP_BODY_D` |
+| complete product depth (documentation) | **16.0** — includes the rear stand-offs and what mounts on them | `OFFICIAL_DEPTH` |
 | active-area (panel) centre | **x −2.47** from the glass centre → bezel 13.5 mm one end, 18.4 the other | `PANEL_DX` → `ACT_DX` |
-| rear M2.5 points | four, at (±51.85, ±25.5) = **103.7 × 51.0** — *not* a Pi hole pattern | `POST_XY` |
+| four rear M2.5-size bosses | (±51.85, ±25.5) = **103.7 × 51.0** — display assembly features, *not* Pi mounting | `STEP_REAR_BOSSES` |
+| Pi mounting stand-offs | **not modelled in the STEP** | — |
 | anything outside the frame footprint or behind its rear plane | none | |
 | active / viewing area (product brief) | 110.4 × 62.1 / 111.5 × 63.0 | `ACTIVE_*`, `VIEW_*` |
 
@@ -60,18 +62,32 @@ L1 1.5T   glass pocket 144.4 × 92.46 : the 0.70 glass sits here, gasket ring be
 L2…       ledge cavity 126.24 × 74.46: the glass border rests on this step (≥ 4.6 mm wide)
           the 9.7 mm rear frame passes through; open back
 ```
+Body depth is sized to the STEP's 10.40 mm glass + frame envelope, **not** to the 16 mm
+complete-product depth in the documentation — the difference is the rear stand-offs and
+the Pi, which deliberately stick out of the open back.
 Forward: front plate. Backward: the ledge. Nothing else is needed — the earlier
 "rear retaining bars" idea was wrong: at the module's edge there is only 0.7 mm of glass,
-no rear surface to press on. The module rear ends 1.1 mm (exact) / 0.6 mm (acrylzip)
-inside the case back.
+no rear surface to press on. The **STEP-modelled glass/frame body** ends 1.1 mm (exact) / 0.6 mm (acrylzip) inside
+the case back; the rear stand-offs and the Pi bolted to them project out through the
+open back, which is why the complete product is documented as 16 mm deep while the
+acrylic body is only 11.5.
 
-### Pi 5 mounting — read this
-The documentation says the Pi 5 screws to "four stand-offs" with the supplied M2.5 screws.
-The **5" STEP shows four rear M2.5 points 103.7 × 51.0 mm apart, which is not the Pi 5's
-58 × 49 pattern** — so on the 5" a bracket must be involved. Those screws hold the Pi
-(or bracket) to the LCD; they have nothing to do with this case. The preview draws a
-generic bracket + Pi block as illustration only. Cables: 22→15-way FFC, display J1 → Pi
-GPIO power.
+### Pi 5 mounting
+Per Raspberry Pi's documentation you can mount **any SBC form-factor Raspberry Pi
+directly to the back of the Touch Display 2**: align the Pi with the **four corner
+stand-offs** on the display rear and secure it with the **four supplied M2.5 screws**.
+That is the method assumed here. Cables: 22→15-way FFC, display J1 → Pi GPIO power.
+
+Those four screws hold the Pi to the display. They are **not** the case bolts and have
+nothing to do with holding the display in the acrylic.
+
+The STEP models the glass and frame body only — it does **not** model the stand-offs, so
+their exact coordinates and height are not published data. The preview therefore draws
+the Pi's 58 × 49 pattern centred on the display's rear frame, at a nominal 4 mm
+stand-off height; treat that placement as illustration. (An earlier revision of this
+repo misread the STEP's four 103.7 × 51.0 rear bosses as the Pi mounting points and
+wrongly concluded a bracket was required. Those bosses are display assembly features.
+No case geometry was ever derived from them.)
 
 ## Joy-Con slot
 Nintendo puts the **female slot on the console** and the **male rail on the Joy-Con**.
@@ -105,7 +121,8 @@ add your own offset. Slot widths come from sheet thickness, hence the coupon.
 ## Still to verify on hardware
 1. Joy-Con fit on **your** Joy-Cons — cut a coupon.
 2. Real glass/frame dimensions vs the STEP on your unit (reference-only drawings).
-3. How the Pi actually mounts to the 5" (bracket in the box?) and rear clearances.
+3. Stand-off positions and height on a real display (not in the STEP), and that the
+   Pi + Active Cooler clear the case back as drawn.
 
 ## Files
 ```
@@ -113,7 +130,8 @@ acrylic_panels.py    all geometry + design checks (raises before exporting on fa
 verify_dxf.py        re-measures the exported DXFs against the code
 render_previews.py   preview PNGs (VTK) + slot section (matplotlib)
 ORDER.md             what to order, per version, plus hardware BOM
-reference/td2_5in.step   official Raspberry Pi 5" Touch Display 2 model (validation)
+reference/measure_step.py  re-measures the official 5" STEP -> every display number here
+reference/README.md        how to download td2_5in.step (5.2 MB, deliberately not committed)
 out/acrylic/v7_clear_exact/        DXFs, sheet_*.dxf, manifest.txt, previews (front/back/exploded/slot/ledge), stack_preview.stl
 out/acrylic/v7_clear_acrylzip/     standard-thickness fallback
 out/acrylic/test_coupon_exact/     fit coupon (cut first)
