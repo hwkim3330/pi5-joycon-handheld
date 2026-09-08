@@ -1,23 +1,22 @@
 v5_cooler_ssd
-Room for the Pi 5 Active Cooler + an M.2 HAT+ / NVMe SSD (~+10 mm); back plate gets a 48 mm fan window over the cooler.
+Closed box with room for Active Cooler + M.2 HAT; 48 mm fan window in the back.
 
-outer 161.0 x 109.0 mm, stack total 51 mm (+14 mm with rails)
+outer 161.0 x 109.0 mm; acrylic stack 51 mm (+8 mm with rails)
 display cavity 145.0 x 93.0; window 111.4 x 63.1
 
-part                thickness  qty
-front               3T        1
-L1_plain            5T        1
-L2_display          5T        1
-L3_display          5T        1
-L4_rail             5T        1
-L5_pi               5T        1
-L6_pi               5T        1
-L7_pi               5T        1
-L8_pi               5T        1
-L9_pi               5T        1
-back                3T        1
+part                   thickness  qty
+front                  3T        1
+L1_plain               5T        1
+L2_display             5T        1
+L3_display             5T        1
+L4_rail                5T        1
+L5_pi                  5T        1
+L6_pi                  5T        1
+L7_pi                  5T        1
+L8_pi                  5T        1
+L9_pi                  5T        1
+back                   3T        1
 
-hardware: M2.5 x 55 black button-head bolts + nuts (V1: nuts trapped in L1)
-printed: joycon_rail_L.stl + joycon_rail_R.stl (only if rail=True)
-finish: CAST acrylic (clean glossy laser edge); front = black or smoked
-laser: kerf ~0.15 mm; 2.8 mm holes = M2.5 clearance
+hardware: 4x M2.5 x 55 black button-head + M2.5 nuts
+rails: print joycon_rail_acrylic_L/R.stl
+finish: CAST acrylic; front black or smoked. kerf ~0.15 mm; 2.8 mm holes = M2.5 clearance

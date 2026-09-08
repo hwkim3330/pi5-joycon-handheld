@@ -1,0 +1,20 @@
+v6_open_acrylic_rail
+Acrylic only around the LCD (16 mm). Pi 5 + cooler/SSD hang out the open back. Acrylic T-dovetail rails: 3T neck tab + glued 2T head strips. Nuts trapped in L1, front glued.
+
+outer 161.0 x 109.0 mm; acrylic stack 18 mm (+8 mm with rails)
+display cavity 145.0 x 93.0; window 111.4 x 63.1
+
+part                   thickness  qty
+front                  2T        1
+L1_nuttrap             5T        1
+L2_rail                3T        1
+L3_display             5T        1
+L4_display             3T        1
+rail_head_strip_1      2T        1
+rail_head_strip_2      2T        1
+rail_head_strip_3      2T        1
+rail_head_strip_4      2T        1
+
+hardware: 4x M2.5 x 22 black button-head + M2.5 nuts (trapped in L1); 0.5 mm VHB for the front
+rails: glue the four 2T head strips onto both faces of each rail-layer tab, flush with the tab tip, with acrylic cement (Acrifix/Weld-On). Neck 3 mm, head 7 mm.
+finish: CAST acrylic; front black or smoked. kerf ~0.15 mm; 2.8 mm holes = M2.5 clearance
