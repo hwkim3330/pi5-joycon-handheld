@@ -213,6 +213,10 @@ def export_version(name, v):
         layer = solid.faces("<Z").wires().toPending().extrude(t).translate((0, 0, z))
         asm = layer if asm is None else asm.union(layer)
         z += t
+    # display + Pi placeholder so the window shows a screen, not an empty box
+    disp = (cq.Workplane("XY").rect(DISP_W, DISP_H).extrude(DISP_D)
+            .edges("|Z").fillet(2.0).translate((0, 0, v["front_t"] + 0.01)))
+    asm = asm.union(disp)
     if v["rail"]:
         try:
             import joycon_rail as jr
