@@ -3,6 +3,9 @@
 For the fabricated build, `KETI_Acrylic_Order_REV4_StraightGuide_Transparent_2T_3T.dxf`
 = `out/acrylic/v8_clear_straightguide_ordered/`.
 
+**Interactive 3D version of this guide — rotate the stack, click a plate to see which one
+it is: https://hwkim3330.github.io/pi5-joycon-handheld/**
+
 **Read the Joy-Con section first.** The case assembles and works, but the side guide as
 built does **not** lock a Joy-Con on. That is a consequence of the straight-groove
 revision, not a fabrication error.
@@ -91,12 +94,28 @@ was only ever going to *hold* them. Set the unit down or dock it and the grooves
 the Joy-Cons nicely. This costs nothing and nothing is wrong with it — it is just not a
 hold-in-your-hands handheld.
 
-**b) Tape lip — free, 10 minutes, do this before spending money.**
-Run a strip of strong clear tape along the **front edge** and the **rear edge** of each
-groove so roughly **2 mm** of tape overhangs the opening from each side. That narrows the
-mouth from 11.0 to about 7 and gives the head something to catch on. It will tell you
-whether the fit and the guide length are right before you order anything. Tape will not
-survive real use, but it answers the question.
+**b) Tape lip — chosen method.** Free, ten minutes, and it is enough for a Joy-Con that
+only has to stay put rather than take hand load.
+
+Run clear tape along the **front edge** and the **rear edge** of each groove so exactly
+**2.0 mm** overhangs the opening from each side. That takes the mouth from 11.0 mm down to
+about **7.1 mm**, and the rail head is **10.1 mm** — so it can no longer come out
+sideways, while the 7.1 mm neck still passes.
+
+* **Where it sticks.** Front: the front plate's side face is a solid 2 mm band with no
+  groove — tape there and let 2.0 mm hang back over the slot. Rear: tape on the back face
+  of L5 and let 2.0 mm hang forward. Wrapping each strip around the edge onto the front
+  (or rear) face roughly triples the bond area and stops it lifting.
+* **Length** ≈ 100 mm, to cover the 97.5 mm of groove.
+* **Never tape the groove floor.** There is only 0.3 mm of depth to spare over the
+  Joy-Con's 3.1 mm rail; tape on the floor and it will not seat.
+* **Tape type**: thin clear PET/polyester or ordinary clear packing tape, **0.1 mm or
+  thinner**. No fabric or duct tape — too thick, and it will look terrible on clear acrylic.
+* The tape sits at the surface and the head's shoulder is 0.7 mm in, so expect ~0.6 mm of
+  wobble before it catches. That is normal and it still holds.
+
+Re-stick it when it lifts. If it keeps peeling or you want to hold the unit by the
+Joy-Cons, go to (c).
 
 **c) Re-cut two plates — the actual fix.**
 `out/acrylic/v8r_liplayers_recut/` has exactly two replacement plates, **L1r** and **L5r**.

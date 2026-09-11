@@ -25,6 +25,9 @@ Body 164.4 × 108.5 mm, 6 acrylic pieces. Source of truth for every number:
 `acrylic_panels.py`; `verify_dxf.py` re-measures the exported DXFs against it *and*
 against dimensions read off the ordered drawing.
 
+**Interactive assembly guide (3D, click a plate to identify it):
+https://hwkim3330.github.io/pi5-joycon-handheld/**
+
 **Build it from [`ASSEMBLY.md`](ASSEMBLY.md); order it from [`ORDER.md`](ORDER.md).**
 
 > **Parts fabricated.** The straight groove locates a Joy-Con but does **not** retain it:
@@ -183,6 +186,8 @@ verify_dxf.py        re-measures the exported DXFs against the code
 render_previews.py   preview PNGs (VTK) + slot section (matplotlib)
 ORDER.md             what to order, per version, plus hardware BOM
 ASSEMBLY.md          build order and procedure for the as-ordered v8
+make_site.py         builds docs/ - the GitHub Pages 3D assembly viewer
+docs/                the published page (index.html + plates.json)
 reference/measure_step.py  re-measures the official 5" STEP -> every display number here
 reference/README.md        how to download td2_5in.step (5.2 MB, deliberately not committed)
 out/acrylic/v8_clear_straightguide_ordered/  AS ORDERED - DXFs, sheet_*.dxf, manifest.txt, previews, STL
