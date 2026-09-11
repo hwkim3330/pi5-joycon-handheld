@@ -1,0 +1,18 @@
+v8r_liplayers_recut
+RETROFIT for the fabricated v8: replaces L1 and L5 only, to add the missing Joy-Con undercut. Reuse the existing front, L2, L3 and L4 and the same 4x M2.5 x 18.
+
+MATERIAL: clear POLYCARBONATE or PETG 2 mm (NOT acrylic - these two plates carry a 1.0 x 97 mm lip).
+
+part                    thickness  qty
+L1r_gpocket_lip         2T        1
+L5r_pocket_lip          2T        1
+
+thicknesses to order: 2T
+
+resulting Joy-Con slot: mouth 7.0 (reference 7.1), inner 11.0 (reference 10.1) -> +0.9 mm fore-aft play,
+lip 1.0 deep, cavity 2.4 - the same profile as v7.
+
+assembly is unchanged: front 2T | L1r | L2 3T | L3 2T | L4 2T | L5r | washer + nut
+stack still 13.0 mm, still 4x M2.5 x 18.
+
+KERF: nominal finished geometry; the shop applies cutter compensation.

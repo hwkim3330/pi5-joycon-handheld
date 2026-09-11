@@ -27,6 +27,13 @@ against dimensions read off the ordered drawing.
 
 **Build it from [`ASSEMBLY.md`](ASSEMBLY.md); order it from [`ORDER.md`](ORDER.md).**
 
+> **Parts fabricated.** The straight groove locates a Joy-Con but does **not** retain it:
+> the mouth is 11.0 mm, the rail head is 10.1 mm, and with no undercut nothing overhangs
+> it. That is the accepted cost of dropping the 1 mm lip, not a fabrication error.
+> `out/acrylic/v8r_liplayers_recut/` re-cuts **only L1 and L5** with the blind lip pocket
+> to restore a real T-slot (mouth 7.0), reusing the front, L2, L3 and L4 you already have.
+> See ASSEMBLY.md §6.
+
 ## Versions
 | version | side guide | layers | total | sheets | status |
 |---|---|---|---|---|---|
@@ -179,6 +186,7 @@ ASSEMBLY.md          build order and procedure for the as-ordered v8
 reference/measure_step.py  re-measures the official 5" STEP -> every display number here
 reference/README.md        how to download td2_5in.step (5.2 MB, deliberately not committed)
 out/acrylic/v8_clear_straightguide_ordered/  AS ORDERED - DXFs, sheet_*.dxf, manifest.txt, previews, STL
+out/acrylic/v8r_liplayers_recut/   retrofit: 2 replacement plates (L1r, L5r) that add the missing undercut
 out/acrylic/v7_clear_exact/        earlier T-slot reference
 out/acrylic/v7_clear_acrylzip/     earlier T-slot reference, standard thicknesses
 out/acrylic/test_coupon_ordered/   fit coupon for the ordered guide

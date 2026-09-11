@@ -445,7 +445,50 @@ def export_coupon(name, v):
     print(f"coupon {name}: {len(parts)} pieces")
 
 
+# ---------------------------------------------------------------------------
+# Retrofit for the fabricated v8: the straight groove locates a Joy-Con but cannot
+# retain it (mouth 11.0 > head 10.1, no undercut). Re-cutting ONLY L1 and L5 with the
+# v7 blind lip pocket turns the same stack back into a real T-slot:
+#   front 2T | L1r 2T lip | L2 3T | L3 2T | L4 2T | L5r 2T lip
+#   mouth = L2+L3+L4 = 7.0   inner = 11.0   (reference 7.1 / 10.1)
+# Everything else - front, L2, L3, L4, the bolts, the 13.0 mm total - is unchanged.
+# Cut these two in POLYCARBONATE or PETG, not acrylic: they carry a 1.0 x 97 mm lip,
+# exactly the thin rib the ordered revision set out to avoid.
+RETROFIT = dict(
+    name="v8r_liplayers_recut",
+    parts=[("L1r_gpocket_lip", 2.0, "gpocket"), ("L5r_pocket_lip", 2.0, "pocket")],
+    note="RETROFIT for the fabricated v8: replaces L1 and L5 only, to add the missing "
+         "Joy-Con undercut. Reuse the existing front, L2, L3 and L4 and the same 4x M2.5 x 18.")
+
+
+def export_retrofit():
+    r = RETROFIT
+    outdir = f"out/acrylic/{r['name']}"; os.makedirs(outdir, exist_ok=True)
+    parts = [(lbl, t, panel_layer(role, False, "tslot")) for lbl, t, role in r["parts"]]
+    for label, t, solid in parts:
+        export_dxf(solid, f"{outdir}/{label}_{t:g}T.dxf")
+    thick = export_sheets(parts, outdir)
+    mouth = 3.0 + 2.0 + 2.0            # L2 + L3 + L4, still cut full depth
+    inner = mouth + 2 * 2.0            # + the two new lip layers
+    with open(f"{outdir}/manifest.txt", "w") as f:
+        f.write(f"{r['name']}\n{r['note']}\n\n")
+        f.write("MATERIAL: clear POLYCARBONATE or PETG 2 mm (NOT acrylic - these two plates "
+                "carry a 1.0 x 97 mm lip).\n\n")
+        f.write("part                    thickness  qty\n")
+        for label, t, _ in parts:
+            f.write(f"{label:22s}  {t:g}T        1\n")
+        f.write(f"\nthicknesses to order: {', '.join(f'{t:g}T' for t in thick)}\n")
+        f.write(f"\nresulting Joy-Con slot: mouth {mouth:.1f} (reference {MOUTH_TARGET}), "
+                f"inner {inner:.1f} (reference {INNER_TARGET}) -> {inner-INNER_TARGET:+.1f} mm fore-aft play,\n"
+                f"lip {LIP:.1f} deep, cavity {CAV_D} - the same profile as v7.\n")
+        f.write("\nassembly is unchanged: front 2T | L1r | L2 3T | L3 2T | L4 2T | L5r | washer + nut\n")
+        f.write("stack still 13.0 mm, still 4x M2.5 x 18.\n")
+        f.write("\nKERF: nominal finished geometry; the shop applies cutter compensation.\n")
+    print(f"{r['name']}: {len(parts)} replacement plates -> mouth {mouth:.1f}, inner {inner:.1f} -> {outdir}/")
+
+
 def main():
+    export_retrofit()
     for name, v in VERSIONS.items():
         export_version(name, v)
         export_coupon(name, v)
