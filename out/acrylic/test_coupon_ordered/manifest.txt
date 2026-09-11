@@ -1,0 +1,21 @@
+test_coupon_ordered
+FIT COUPON for v8_clear_straightguide_ordered: 40 mm slot section, identical layer order and slot geometry. Cut this first, clamp the six pieces with two M2.5 bolts, slide a Joy-Con in from the open top.
+
+MATERIAL: clear (transparent) CAST acrylic, all parts. Hardware: silver/stainless.
+
+Joy-Con slot: mouth 0.0 (target 7.1), raw inner 11.0 (target 10.1)
+lip 1.0, cavity 2.4, slot 3.4 from face, open top, notch 3.8 @ 9.4 from top
+
+part                    thickness  qty
+C1_gpocket              2T        1
+C2_guide                3T        1
+C3_guide                2T        1
+C4_guide                2T        1
+C5_guide                2T        1
+
+thicknesses to order: 2T, 3T
+
+clamp with 2x M2.5 x 25 + nuts; slide a Joy-Con a few cm from the open top.
+tight -> sand the 5T/2T sheet faces lightly; loose -> add/adjust liners.
+
+KERF: DXF is nominal finished geometry; the shop applies cutter compensation. Do not add kerf yourself.

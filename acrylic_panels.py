@@ -114,6 +114,17 @@ SLOT_Y0    = SEAT_Y - POCKET_H
 NOTCH_Y    = H/2 - NOTCH_FROM_TOP
 MOUTH_TARGET, INNER_TARGET = 7.1, 10.1
 
+# =============================== straight guide (as ordered, v8) ==============
+# The layered T-slot leaves a 1.0 mm lip running the length of the slot on the
+# pocket layers. Laser-cuttable, but a long thin acrylic tongue. The ordered
+# revision drops the lip entirely: every structural layer gets the same plain
+# rectangular groove, so the side wall keeps full section everywhere.
+# Measured from the ordered drawing (REV4): the groove is the same extent as the v7
+# slot - open at the top edge, down to SLOT_Y0 (= 91.5 guide + 6.0 contact bay = 97.5) -
+# but cut as one plain 3.4 mm rectangle. No lip, no undercut.
+GUIDE_D      = SLOT_D                # 3.4, groove depth from the outer face
+WIRE_RECESS_D = 6.8                  # blind recess in the groove floor (L2 only)
+
 # =============================== glass gasket =================================
 # The glass (0.70) sits in the L1 pocket; the rest of L1's thickness is taken up by a
 # compressible foam/silicone gasket ring on the ledge behind the glass border.
@@ -134,6 +145,18 @@ VERSIONS = {
         note="Standard 2T/3T/5T only. 2T pocket layers -> RAW Joy-Con inner 11.0 (0.9 over reference); "
              "bring to ~10.1 with 0.45 mm clear PET liners on each pocket face. Body 11.0."),
 }
+
+VERSIONS["v8_clear_straightguide_ordered"] = dict(
+    front_t=2.0,
+    stack=[("gpocket", 2.0), ("guide", 3.0), ("guide", 2.0), ("guide", 2.0), ("guide", 2.0)],
+    shim=0.0, guide="straight",
+    note="AS ORDERED / AS FABRICATED (KETI_Acrylic_Order_REV4_StraightGuide_Transparent_2T_3T.dxf). "
+         "The v7 T-slot left a 1.0 mm acrylic lip running the whole length of the slot on the pocket "
+         "layers - laser-cuttable but a long thin tongue, judged mechanically fragile. This revision "
+         "replaces it with a plain straight open groove in every structural layer, so the side wall "
+         "keeps full section. The 5T sheet is gone; its depth is redistributed as 3T + one more 2T, "
+         "keeping the acrylic at 13.0 mm. Some lateral play is accepted; a thin clear PET/tape liner "
+         "can be added after a physical fit test. Fabrication submitted; fit NOT yet verified.")
 
 COUPON_LEN = 40.0
 COUPON_W   = 16.0
@@ -158,6 +181,24 @@ def panel_front(v):
     return _holes(p, bolt_pts(), BOLT_CLEAR)
 
 
+def guide_features(p, wire=False):
+    """Straight open side groove, as ordered (REV4): one plain rectangle per side,
+    identical in every structural layer. Open at the top edge, floor at W/2-GUIDE_D,
+    bottom at SLOT_Y0. No lip, no undercut - a guide, not a lock.
+
+    wire=True adds the 3.2 x 6.8 mm BLIND recess in the groove floor over the contact
+    bay (the 3T layer only). It is a pocket for a future contact block: it does NOT
+    break through to the display cavity."""
+    y_top, y_bot = H/2 + 0.2, SLOT_Y0
+    span, yc = y_top - y_bot, (y_top + y_bot)/2
+    for sx in (-1, 1):
+        p = _cut(p, sx*(W/2 - GUIDE_D/2 + 0.1), yc, GUIDE_D + 0.2, span)   # overshoot outward only
+        if wire:
+            p = _cut(p, sx*(W/2 - GUIDE_D - WIRE_RECESS_D/2), SLOT_Y0 + POCKET_H/2,
+                     WIRE_RECESS_D, WIRE_W)
+    return p
+
+
 def slot_features(p, role, wire=False, y_top=None, y_bot=None):
     """Cut the Joy-Con slot features for one side-wall layer."""
     y_top = H/2 + 0.2 if y_top is None else y_top
@@ -174,17 +215,32 @@ def slot_features(p, role, wire=False, y_top=None, y_bot=None):
     return p
 
 
-def panel_layer(role, wire=False):
+def panel_layer(role, wire=False, guide="tslot"):
     p = _rrect(W, H, R_OUT)
     if role == "gpocket":
         p = p.cut(_rrect(GCAV_W, GCAV_H, GCAV_R))                                   # glass sits here
     else:
         p = p.cut(_rrect(FCAV_W, FCAV_H, FCAV_R).translate((FRAME_DX, FRAME_DY, 0)))  # ledge for the glass border
     p = _holes(p, bolt_pts(), BOLT_CLEAR)
+    if guide == "straight":
+        return guide_features(p, wire)
     return slot_features(p, "pocket" if role == "gpocket" else role, wire)
 
 
+def coupon_guide_piece():
+    """Coupon section of a straight-guide layer: same groove, 6 mm solid stop."""
+    y_top, y_bot = H/2, H/2 - COUPON_LEN
+    piece = (cq.Workplane("XY").center(W/2 - COUPON_W/2, (y_top + y_bot)/2)
+             .rect(COUPON_W, COUPON_LEN).extrude(1.0))
+    piece = _holes(piece, [(BX, y_top - 5.0), (BX, y_bot + 5.0)], BOLT_CLEAR)
+    y_top2, y_bot2 = y_top + 0.2, y_bot + POCKET_H
+    piece = _cut(piece, W/2 - GUIDE_D/2 + 0.1, (y_top2 + y_bot2)/2, GUIDE_D + 0.2, y_top2 - y_bot2)
+    return piece
+
+
 def coupon_piece(role, wire=False):
+    if role == "gpocket":
+        role = "pocket"          # same mapping panel_layer() uses for the body
     """Section of one side-wall layer, from the top edge down COUPON_LEN, COUPON_W wide,
     with the identical slot geometry and two M2.5 clamp holes."""
     y_top, y_bot = H/2, H/2 - COUPON_LEN
@@ -222,7 +278,8 @@ def validate(v):
     body = sum(t for _, t in v["stack"])
     total = v["front_t"] + body
     mouth = sum(t for r, t in v["stack"] if r == "mouth")
-    inner = mouth + sum(t for r, t in v["stack"] if r in ("pocket", "gpocket"))
+    inner = (body if v.get("guide") == "straight"
+             else mouth + sum(t for r, t in v["stack"] if r in ("pocket", "gpocket")))
     eff_inner = inner - 2*v["shim"]
     r = BOLT_CLEAR/2
     g_t = v["stack"][0][1]
@@ -247,8 +304,22 @@ def validate(v):
     _check((W/2 - SLOT_D) - (BX + r) >= 1.0, "bolt hole ligament to the Joy-Con slot < 1.0 mm")
     _check(SIDE_WALL - SLOT_D >= 4.0, "side wall too thin behind the slot")
     # slot nominal
-    _check(abs(mouth - 7.0) < 1e-6, f"mouth {mouth} != 7.0 (5T+2T)")
-    _check(9.5 <= inner <= 11.5, f"inner {inner} out of range")
+    if v.get("guide") == "straight":
+        _check(mouth == 0 and all(r in ("gpocket", "guide") for r, _ in v["stack"]),
+               "straight-guide stack may only contain gpocket/guide layers")
+        _check(abs(GUIDE_D - SLOT_D) < 1e-6, "groove depth must equal SLOT_D")
+        # The wire recess sits on a ledge-cavity layer, where the wall runs from the
+        # cavity edge out to the face - not on the narrower glass-pocket layer.
+        # It must stay BLIND: it must not reach the ledge cavity.
+        recess_inner = W/2 - GUIDE_D - WIRE_RECESS_D
+        _check(recess_inner - (abs(FRAME_DX) + FCAV_W/2) >= 3.0,
+               f"wire recess breaks into the ledge cavity (only {recess_inner - (abs(FRAME_DX)+FCAV_W/2):.2f} mm left)")
+        _check(inner == body, "straight guide: channel depth == body")
+        _check(v["stack"][1][0] == "guide" and abs(v["stack"][1][1] - 3.0) < 1e-6,
+               "the wire recess belongs on the 3T ledge layer (L2)")
+    else:
+        _check(abs(mouth - 7.0) < 1e-6, f"mouth {mouth} != 7.0 (5T+2T)")
+        _check(9.5 <= inner <= 11.5, f"inner {inner} out of range")
     need, rec = bolt_length(total)
     gasket = g_t - GLASS_T + 0.2          # uncompressed thickness to specify
     return dict(body=body, total=total, mouth=mouth, inner=inner, eff_inner=eff_inner,
@@ -277,22 +348,25 @@ def export_sheets(parts, outdir):
 
 
 def build_case(v):
+    g = v.get("guide", "tslot")
     parts = [("front", v["front_t"], panel_front(v))]
-    first_mouth = True
+    wired = False
     for i, (role, t) in enumerate(v["stack"], 1):
-        wire = role == "mouth" and first_mouth
-        first_mouth = first_mouth and not wire
-        parts.append((f"L{i}_{role}", t, panel_layer(role, wire)))
+        if g == "straight":
+            wire = (not wired) and role == "guide" and abs(t - 3.0) < 1e-6   # the 3T layer carries it
+        else:
+            wire = (not wired) and role == "mouth"
+        wired = wired or wire
+        parts.append((f"L{i}_{role}", t, panel_layer(role, wire, g)))
     return parts
 
 
 def build_coupon(v):
+    g = v.get("guide", "tslot")
     parts = []
-    first_mouth = True
     for i, (role, t) in enumerate(v["stack"], 1):
-        wire = role == "mouth" and first_mouth
-        first_mouth = first_mouth and not wire
-        parts.append((f"C{i}_{role}", t, coupon_piece(role)))
+        piece = coupon_guide_piece() if g == "straight" else coupon_piece(role)
+        parts.append((f"C{i}_{role}", t, piece))
     return parts
 
 

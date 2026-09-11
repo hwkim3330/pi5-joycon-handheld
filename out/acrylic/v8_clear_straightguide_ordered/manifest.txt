@@ -1,0 +1,26 @@
+v8_clear_straightguide_ordered
+AS ORDERED / AS FABRICATED (KETI_Acrylic_Order_REV4_StraightGuide_Transparent_2T_3T.dxf). The v7 T-slot left a 1.0 mm acrylic lip running the whole length of the slot on the pocket layers - laser-cuttable but a long thin tongue, judged mechanically fragile. This revision replaces it with a plain straight open groove in every structural layer, so the side wall keeps full section. The 5T sheet is gone; its depth is redistributed as 3T + one more 2T, keeping the acrylic at 13.0 mm. Some lateral play is accepted; a thin clear PET/tape liner can be added after a physical fit test. Fabrication submitted; fit NOT yet verified.
+
+MATERIAL: clear (transparent) CAST acrylic, all parts. Hardware: silver/stainless.
+
+body 164.4 x 108.5 mm; acrylic stack front+body = 13.0 mm (body 11.0; STEP glass/frame body 10.40 -> its rear ends +0.60 inside. Complete product depth is 16 mm per the documentation: stand-offs + Pi project through the open back.)
+glass pocket 144.40 x 92.46 (L1); ledge cavity 126.24 x 74.46 offset -3.47; window 112.0 x 63.5 at x=-2.47 (viewing 111.5 x 63.0 + 0.25/side)
+glass gasket: ring 4.0 mm wide on the ledge, 1.5 mm uncompressed foam/silicone
+Joy-Con slot: mouth 0.0 (target 7.1), raw inner 11.0 (target 10.1)
+lip 1.0, cavity 2.4, slot 3.4 from face, open top, notch 3.8 @ 9.4 from top
+
+part                    thickness  qty
+front                   2T        1
+L1_gpocket              2T        1
+L2_guide                3T        1
+L3_guide                2T        1
+L4_guide                2T        1
+L5_guide                2T        1
+
+thicknesses to order: 2T, 3T
+
+CASE BOLTS (separate from the 4 display->Pi screws shipped with the display):
+  4x M2.5 silver button-head, length >= 17.0 mm (stack 13.0 + washer 0.5 + nut 2.0 + 1.5 stick-out) -> use M2.5 x 18 mm
+  4x M2.5 washer, 4x M2.5 nut (nyloc: add 1 mm to the length)
+
+KERF: DXF is nominal finished geometry; the shop applies cutter compensation. Do not add kerf yourself.

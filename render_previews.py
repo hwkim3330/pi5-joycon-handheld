@@ -98,32 +98,58 @@ def slot_diagram(v, fname):
     import matplotlib.pyplot as plt
     from matplotlib.patches import Rectangle
     layers = [("front", v["front_t"], "front")] + [(f"L{i} {r}", t, r) for i, (r, t) in enumerate(v["stack"], 1)]
+    straight = v.get("guide") == "straight"
     WALL, LIP, CAV, SLOT = ap.SIDE_WALL, ap.LIP, ap.CAV_D, ap.SLOT_D
-    fig, ax = plt.subplots(figsize=(9.5, 6.2)); z = 0.0; acr = "#cfe3f2"; edge = "#5b7fa6"
+    GD = ap.GUIDE_D
+    fig, ax = plt.subplots(figsize=(9.8, 6.4)); z = 0.0; acr = "#cfe3f2"; edge = "#5b7fa6"
+    ch0 = ch1 = None
     for name, t, role in layers:
-        if role == "front": ax.add_patch(Rectangle((-3, z), WALL+3, t, fc=acr, ec=edge, lw=0.9))
-        elif role == "mouth": ax.add_patch(Rectangle((0, z), WALL-SLOT, t, fc=acr, ec=edge, lw=0.9))
+        if role == "front":
+            ax.add_patch(Rectangle((-3, z), WALL+3, t, fc=acr, ec=edge, lw=0.9))
+        elif straight:                                   # plain groove, every structural layer
+            ax.add_patch(Rectangle((0, z), WALL-GD, t, fc=acr, ec=edge, lw=0.9))
+            if role == "guide" and abs(t-3.0) < 1e-6:    # the 3T layer: blind wire recess
+                ax.add_patch(Rectangle((WALL-GD-ap.WIRE_RECESS_D, z), ap.WIRE_RECESS_D, t,
+                                       fc="#eef4fa", ec=edge, lw=0.7, ls=":"))
+            ch0 = z if ch0 is None else ch0; ch1 = z + t
+        elif role == "mouth":
+            ax.add_patch(Rectangle((0, z), WALL-SLOT, t, fc=acr, ec=edge, lw=0.9))
         elif role in ("pocket", "gpocket"):
-            ax.add_patch(Rectangle((0, z), WALL-SLOT, t, fc=acr, ec=edge, lw=0.9)); ax.add_patch(Rectangle((WALL-LIP, z), LIP, t, fc=acr, ec=edge, lw=0.9))
-        else: ax.add_patch(Rectangle((0, z), WALL, t, fc=acr, ec=edge, lw=0.9))
-        ax.text(-3.6, z+t/2, f"{name}  {t:g}T", ha="right", va="center", fontsize=9, color="#333"); z += t
-    st = v["stack"]; pt = st[0][1]
-    zm0 = v["front_t"] + pt; zm1 = zm0 + 7.0; zc0 = zm0 - pt; zc1 = zm1 + pt; xo = WALL
-    ax.add_patch(Rectangle((xo+0.05, zc0-2), 4.0, (zc1-zc0)+4, fc="#c9ccd3", ec="#444", lw=0.8))
-    ax.add_patch(Rectangle((xo-SLOT, zc0+0.05), CAV-0.05, (zc1-zc0)-0.1, fc="#8a8f99", ec="#444", lw=0.8))
-    ax.add_patch(Rectangle((xo-LIP, zm0+0.05), LIP+0.05, 7.0-0.1, fc="#8a8f99", ec="#444", lw=0.8))
-    ax.text(xo+2.05, (zc0+zc1)/2, "Joy-Con rail", ha="center", va="center", fontsize=9, rotation=90, color="#222")
+            ax.add_patch(Rectangle((0, z), WALL-SLOT, t, fc=acr, ec=edge, lw=0.9))
+            ax.add_patch(Rectangle((WALL-LIP, z), LIP, t, fc=acr, ec=edge, lw=0.9))
+        else:
+            ax.add_patch(Rectangle((0, z), WALL, t, fc=acr, ec=edge, lw=0.9))
+        ax.text(-3.6, z+t/2, f"{name}  {t:g}T", ha="right", va="center", fontsize=9, color="#333")
+        z += t
+    xo = WALL
     def dim(x0, x1, y, txt, dy=0.35):
-        ax.annotate("", (x0, y), (x1, y), arrowprops=dict(arrowstyle="<->", lw=0.9, color="#c0392b")); ax.text((x0+x1)/2, y+dy, txt, ha="center", fontsize=8.5, color="#c0392b")
+        ax.annotate("", (x0, y), (x1, y), arrowprops=dict(arrowstyle="<->", lw=0.9, color="#c0392b"))
+        ax.text((x0+x1)/2, y+dy, txt, ha="center", fontsize=8.5, color="#c0392b")
     def vdim(x, y0, y1, txt, dx=0.3, ha="left"):
-        ax.annotate("", (x, y0), (x, y1), arrowprops=dict(arrowstyle="<->", lw=0.9, color="#1f6fb2")); ax.text(x+dx, (y0+y1)/2, txt, va="center", ha=ha, fontsize=8.5, color="#1f6fb2")
-    inner = 7.0 + 2*pt
-    vdim(xo-SLOT-0.6, zm0, zm1, "mouth 7.0\n(5T+2T)")
-    vdim(xo-SLOT-2.9, zc0, zc1, f"inner {inner:.1f}\n(+{pt:g}T x2)" + (f"\nliners -> {inner-2*v['shim']:.2f}" if v["shim"] else ""), dx=-0.3, ha="right")
-    dim(xo-SLOT, xo-LIP, z+0.9, f"cavity {CAV}"); dim(xo-LIP, xo, z+2.3, f"lip {LIP}"); dim(xo-SLOT, xo, z+3.7, f"slot {SLOT} from face")
+        ax.annotate("", (x, y0), (x, y1), arrowprops=dict(arrowstyle="<->", lw=0.9, color="#1f6fb2"))
+        ax.text(x+dx, (y0+y1)/2, txt, va="center", ha=ha, fontsize=8.5, color="#1f6fb2")
+    if straight:
+        ax.add_patch(Rectangle((xo-GD+0.05, ch0+0.1), GD+3.9, (ch1-ch0)-0.2, fc="#c9ccd3", ec="#444", lw=0.8))
+        ax.text(xo+1.6, (ch0+ch1)/2, "Joy-Con rail", ha="center", va="center", fontsize=9, rotation=90, color="#222")
+        vdim(xo-GD-0.7, ch0, ch1, f"channel {ch1-ch0:.0f}\n(L1..L5)")
+        dim(xo-GD, xo, z+0.9, f"groove {GD} from face")
+        dim(xo-GD-ap.WIRE_RECESS_D, xo-GD, z+2.3, f"wire recess {ap.WIRE_RECESS_D} (blind, 3T only)")
+        ax.set_title("As ordered (REV4): straight open side groove - no lip, no undercut  |  clear acrylic", fontsize=10.5)
+    else:
+        pt = v["stack"][0][1]
+        zm0 = v["front_t"] + pt; zm1 = zm0 + 7.0; zc0 = zm0 - pt; zc1 = zm1 + pt
+        ax.add_patch(Rectangle((xo+0.05, zc0-2), 4.0, (zc1-zc0)+4, fc="#c9ccd3", ec="#444", lw=0.8))
+        ax.add_patch(Rectangle((xo-SLOT, zc0+0.05), CAV-0.05, (zc1-zc0)-0.1, fc="#8a8f99", ec="#444", lw=0.8))
+        ax.add_patch(Rectangle((xo-LIP, zm0+0.05), LIP+0.05, 7.0-0.1, fc="#8a8f99", ec="#444", lw=0.8))
+        ax.text(xo+2.05, (zc0+zc1)/2, "Joy-Con rail", ha="center", va="center", fontsize=9, rotation=90, color="#222")
+        inner = 7.0 + 2*pt
+        vdim(xo-SLOT-0.6, zm0, zm1, "mouth 7.0\n(5T+2T)")
+        vdim(xo-SLOT-2.9, zc0, zc1, f"inner {inner:.1f}\n(+{pt:g}T x2)" + (f"\nliners -> {inner-2*v['shim']:.2f}" if v["shim"] else ""), dx=-0.3, ha="right")
+        dim(xo-SLOT, xo-LIP, z+0.9, f"cavity {CAV}"); dim(xo-LIP, xo, z+2.3, f"lip {LIP}")
+        dim(xo-SLOT, xo, z+3.7, f"slot {SLOT} from face")
+        ax.set_title("Joy-Con T-slot section (reference: Cuttlephone 7.1 / 10.1 / 2.4) - clear acrylic", fontsize=10.5)
     ax.text(WALL/2-1.5, -1.6, f"<- glass pocket / ledge        side wall {WALL:g} mm        outer face ->", ha="center", fontsize=8.5, color="#555")
-    ax.set_xlim(-14, WALL+5.5); ax.set_ylim(-2.4, z+5.0); ax.set_aspect("equal"); ax.axis("off")
-    ax.set_title("Joy-Con T-slot section at the side wall (reference: Cuttlephone 7.1 / 10.1 / 2.4) - clear acrylic", fontsize=10.5)
+    ax.set_xlim(-15, WALL+6.5); ax.set_ylim(-2.4, z+5.0); ax.set_aspect("equal"); ax.axis("off")
     fig.tight_layout(); fig.savefig(fname, dpi=150); plt.close(fig); print("saved", fname)
 
 def main():
